@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: tpd-loggers
+      auto-offset-reset: earliest
+    # change this property if you are using your own
+    # Kafka cluster or your Docker IP is different
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+tpd:
+  topic-name: venkata
+  messages-per-request: 10

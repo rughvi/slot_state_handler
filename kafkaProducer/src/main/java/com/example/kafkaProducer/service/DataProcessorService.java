@@ -11,6 +11,7 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -22,13 +23,16 @@ public class DataProcessorService {
     private String topicName;
 
     public void Run(Integer count) throws JsonProcessingException {
+        Random random = new Random();
+
         for(int i =0 ;i < count; i++)
         {
+            var nextInt = random.nextInt(100);
             var localDate = LocalDate.of(2023, 3, 9);
-            DataModel dataModel = new DataModel(i, "", localDate.toString());
+            DataModel dataModel = new DataModel(i, "abc" + nextInt, localDate.plusDays(nextInt).toString());
             ObjectWriter ow = (ObjectWriter) new ObjectMapper().writer().withDefaultPrettyPrinter();
             String json = ow.writeValueAsString(dataModel);
-            sendMessage("Message : " + json);
+            sendMessage(json);
         }
     }
 
