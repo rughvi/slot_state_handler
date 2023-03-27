@@ -1,6 +1,6 @@
 package com.example.kafkaConsumer.kafka;
 
-import com.example.kafkaConsumer.models.DataModel;
+import com.example.kafkaConsumer.models.PersonModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -20,13 +20,13 @@ public class KafkaTopicListener {
     @KafkaListener(topics = "${tpd.topic-name}", groupId = "group_id")
     public void consume(ConsumerRecord<String, String> payload){
 
-        var or = new ObjectMapper();
         try {
-            DataModel dataModel = or.readValue(payload.value(), DataModel.class);
-            System.out.println(dataModel.getId());
-            System.out.println(dataModel.getName());
-            System.out.println(dataModel.getDOB());
-        } catch (IOException e) {
+            System.out.println(payload.value());
+            PersonModel personModel = PersonModel.convertFromXml(payload.value());
+            System.out.println(personModel.getId());
+            System.out.println(personModel.getName());
+            System.out.println(personModel.getDOB());
+        } catch (Exception e) {
             System.out.println("Error occured while parsing string to DataModel");
             System.out.println(e);
         }
